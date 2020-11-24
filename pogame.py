@@ -4,7 +4,6 @@ from constants import *
 from screen import create_screen, update_screen
 from world import create_world
 
-
 def main():
     # Création du "monde" tel que nous le définissons
     world = create_world()
@@ -41,6 +40,19 @@ def main():
                     # À la prochaine itération de notre boucle principale, la condition sera fausse et le programme va
                     # se terminer.
                     running = False
+                if event.key == pygame.K_LEFT:
+                    if player[0] > 0:
+                        player = (player[0] - 1, player[1])
+                if event.key == pygame.K_RIGHT:
+                    if player[0] < WORLD_WIDTH - 1:
+                        player = (player[0] + 1, player[1])
+                if event.key == pygame.K_UP: 
+                    if player[1] > 0:
+                        player = (player[0], player[1] - 1)
+                if event.key == pygame.K_DOWN:
+                    if player[1] < WORLD_HEIGHT - 1:
+                        player = (player[0], player[1] + 1)
+                
             elif event.type == pygame.KEYUP:
                 # Une touche du clavier a été relachée.
                 pass
