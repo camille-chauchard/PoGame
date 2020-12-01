@@ -1,6 +1,7 @@
 import pygame
 
 from constants import *
+from world import get_room
 
 
 def create_screen(world):
@@ -8,7 +9,7 @@ def create_screen(world):
     pygame.init()
     board_width = WORLD_WIDTH * ROOM_SIZE
     board_height = WORLD_HEIGHT * ROOM_SIZE
-    screen = pygame.display.set_mode((board_width, board_height))
+    screen = pygame.display.set_mode((board_width, board_height + COOKIE_RADIUS * 4))
     pygame.display.set_caption("SciencesPo Game")
 
     # Fill background
@@ -38,7 +39,7 @@ def create_screen(world):
     return screen, background
 
 
-def update_screen(screen, background, world, player):
+def update_screen(screen, background, world, player, inventory):
     player_x, player_y = player
     screen.blit(background, (0, 0))
 
@@ -53,6 +54,66 @@ def update_screen(screen, background, world, player):
             PLAYER_SIZE,
         ],
     )
+
+    for y in range(WORLD_HEIGHT):
+        for x in range(WORLD_WIDTH):
+            if "cookie" in get_room(world, x, y):
+                pygame.draw.circle(
+                    screen,
+                    (250, 180, 40),
+                    (
+                        x * ROOM_SIZE + ROOM_SIZE - COOKIE_RADIUS * 2,
+                        y * ROOM_SIZE + ROOM_SIZE - COOKIE_RADIUS * 2,
+                    ),
+                    COOKIE_RADIUS,
+                )
+    
+    for y in range(WORLD_HEIGHT):
+        for x in range(WORLD_WIDTH):
+            if "sac" in get_room(world, x, y):
+                pygame.draw.rect(
+                    screen,
+                    (25, 94, 131),
+                    [
+                        x * ROOM_SIZE + ROOM_SIZE - BAG_SIZE * 2,
+                        y * ROOM_SIZE + ROOM_SIZE - BAG_SIZE * 2,
+                        BAG_SIZE,
+                        BAG_SIZE,
+                    ],
+                )
+    
+    for y in range(WORLD_HEIGHT):
+        for x in range(WORLD_WIDTH):
+            if "monstre" in get_room(world, x, y):
+                pygame.draw.rect(
+                    screen,
+                    (0, 0, 0),
+                    [
+                        x * ROOM_SIZE + ROOM_SIZE - BAG_SIZE * 2,
+                        y * ROOM_SIZE + ROOM_SIZE - BAG_SIZE * 2,
+                        MONSTER_SIZE,
+                        MONSTER_SIZE,
+                    ],
+                )
+        
+    x = 10
+    for item in inventory:
+        y = WORLD_HEIGHT * ROOM_SIZE + COOKIE_RADIUS * 2
+        if item=="sac":
+            pygame.draw.rect(
+                screen,
+                (25, 94, 131),
+                (x,y,BAG_SIZE,BAG_SIZE),
+            )
+        if item=="cookie" :
+            pygame.draw.circle(
+                screen,
+                (250, 180, 40),
+                (x, y),
+                COOKIE_RADIUS,
+            )       
+
+        x += BAG_SIZE*2
 
     # TODO en théorie, il faudrait utiliser les éléments du monde pour afficher d'autres choses sur notre écran ...
 
