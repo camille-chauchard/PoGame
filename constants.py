@@ -6,5 +6,5 @@ PLAYER_SIZE = 16
 BAG_SIZE = 8
 COOKIE_RADIUS = 4
 MONSTER_SIZE = 8 
-
+black=(0,0,0)
 

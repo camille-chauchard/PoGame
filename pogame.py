@@ -5,6 +5,14 @@ from constants import *
 from screen import create_screen, update_screen
 from world import create_world, get_room
 
+#black=(0,0,0)
+#pygame.font.init()
+#font = pygame.font.SysFont("arial", 60)
+
+#def message_to_screen(msg,color):
+    #screen_text = font.render (msg,True,color)
+    #screen.blit(screen_text,[WORLD_WIDTH/2,WORLD_HEIGHT/2])
+
 
 def transfer_item(source, target, item):
     if item in source:
@@ -51,21 +59,72 @@ def main():
                     running = False
                 elif event.key == pygame.K_UP:
                     if position[1] > 0:
-                        position = [position[0], position[1] - 1]
+                        room=get_room(world, position[0], position[1])
+                        if len(room) > 0:
+                            item = room[0]
+                            if item=="monstre":
+                            # Le joueur a perdu
+                                #message_to_screen("Vous avez perdu ! ",black)
+                                #pygame.display.update()
+                                running = False                                
+                            else:
+                                position = [position[0], position[1] - 1]    
+                        else:
+                            position = [position[0], position[1] - 1]
+                        
                 elif event.key == pygame.K_DOWN:
                     if position[1] < WORLD_HEIGHT - 1:
-                        position = [position[0], position[1] + 1]
+                        room=get_room(world, position[0], position[1])
+                        if len(room) > 0:
+                            item = room[0]
+                            if item=="monstre":
+                            # Le joueur a perdu
+                                #message_to_screen("Vous avez perdu ! ",black)
+                                #pygame.display.update()
+                                running = False                                
+                            else:
+                                position = [position[0], position[1] + 1]      
+                        else:
+                            position = [position[0], position[1] + 1] 
+                        
+                        
                 elif event.key == pygame.K_LEFT:
                     if position[0] > 0:
-                        position = [position[0] - 1, position[1]]
+                        room=get_room(world, position[0], position[1])
+                        if len(room) > 0:
+                            item = room[0]
+                            if item=="monstre":
+                            # Le joueur a perdu
+                                #message_to_screen("Vous avez perdu ! ",black)
+                                #pygame.display.update()
+                                running = False                                
+                            else:
+                                position = [position[0] - 1, position[1]]      
+                        else:
+                            position = [position[0] - 1, position[1]]
+                        
+                        
                 elif event.key == pygame.K_RIGHT:
                     if position[0] < WORLD_WIDTH - 1:
-                        position = [position[0] + 1, position[1]]
+                        room=get_room(world, position[0], position[1])
+                        if len(room) > 0:
+                            item = room[0]
+                            if item=="monstre":
+                            # Le joueur a perdu
+                                #message_to_screen("Vous avez perdu ! ",black)
+                                #pygame.display.update()
+                                running = False                                
+                            else:
+                                 position = [position[0] + 1, position[1]]      
+                        else:
+                            position = [position[0] + 1, position[1]]
+                        
                 elif event.key == pygame.K_SPACE:
                     room = get_room(world, position[0], position[1])
                     if len(room) > 0:
                         item = room[0]
                         room, inventory = transfer_item(room, inventory, item)
+                        
             elif event.type == pygame.KEYUP:
                 # Une touche du clavier a été relachée.
                 pass
@@ -74,7 +133,8 @@ def main():
         # On met à jour ce qu'on affiche sur l'écran, et on "pousse" l'aiguille de l'horloge d'un pas.
         update_screen(screen, background, world, position, inventory)
         clock.tick()
-
+        
+        
         if inventory.count('cookie')==10 :
             # Le joueur a gagné !
             break
@@ -84,4 +144,5 @@ if __name__ == "__main__":
     try:
         main()
     finally:
+        #time.sleep(2)
         pygame.quit()

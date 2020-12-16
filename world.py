@@ -12,7 +12,7 @@ def create_world():
                 world.append(["cookie"])
             if random.randint(0, (WORLD_HEIGHT*WORLD_WIDTH)/8) == 0 and (x, y) != (0, 0):
                 world.append(["sac"])
-            if random.randint(0, WORLD_HEIGHT*WORLD_WIDTH / 4) == 0 and (x, y) != (0, 0):
+            if random.randint(0, 4) == 0 and (x, y) != (0, 0):
                 world.append(["monstre"])
             else:
                 world.append([])
